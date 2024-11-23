@@ -43,8 +43,7 @@ async def update_user(db: Annotated[Session, Depends(get_db)], user_id: int, upd
     db.execute(update(User).where(User.id == user_id).values(
                                    firstname=update_user.firstname,
                                    lastname=update_user.lastname,
-                                   age=update_user.age,
-                                    slug=slugify(update_user.firstname)))
+                                   age=update_user.age))
     db.commit()
     return {'status_code': status.HTTP_200_OK, 'transaction': 'User update is successful!'}
 
@@ -53,6 +52,6 @@ async def delete_user(db: Annotated[Session, Depends(get_db)], user_id: int):
     deleted_user = db.scalar(select(User).where(User.id == user_id))
     if deleted_user is None:
         raise HTTPException(status_code=404, detail='User was not found')
-    db.execute(delete(User).where(User.id == user_id).values())
+    db.execute(delete(User).where(User.id == user_id))
     db.commit()
     return {'status_code': status.HTTP_200_OK, 'transaction': 'User delete is successful!'}
