@@ -22,6 +22,7 @@ async def task_by_id(db: Annotated[Session, Depends(get_db)], task_id: int):
         raise HTTPException(status_code=404, detail="Task was not found")
     return select_task
 
+
 @router.post("/create")
 async def create_task(db: Annotated[Session, Depends(get_db)], user_id: int, create_task: CreateTask):
     user_with_task = db.scalar(select(User).where(User.id == user_id))
